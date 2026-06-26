@@ -1,4 +1,4 @@
-g// Code by Georgy Rached
+// Code by Georgy Rached
 // ESP32 MP3 Player - boot anim, stars, marquee, icons, progress bar, transitions
 // Wiring (ESP32 DOIT DevKit V1):
 //   DFPlayer: VCC->VIN(5V), GND->GND, RX->GPIO17(via resistor), TX->GPIO16

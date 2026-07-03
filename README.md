@@ -1,5 +1,3 @@
-# MP3-Player
-
 # 🎵 ESP32 MP3 Player
 
 A handheld, SD-card-based MP3 player built on an ESP32, with an animated OLED interface, a two-level album/track menu, and full playback controls. Music is decoded by a DFPlayer Mini and played through a headphone amplifier.
@@ -36,16 +34,15 @@ A handheld, SD-card-based MP3 player built on an ESP32, with an animated OLED in
 | MAX4410 headphone amplifier | Drives earphones (with volume knob) |
 | 3.5mm panel-mount jack | Audio output |
 | 4 × push buttons | Navigation & control |
-| 3.7V LiPo + boost converter (to 5V) | Powers the whole device |
-| TP4056 charging module (USB-C, with protection) | Recharges the LiPo |
-| ON/OFF switch (SPST) | Cuts power between charger and boost |
+| 9V rechargeable battery + buck converter (to 5V) | Powers the whole device |
+| ON/OFF switch (SPST) | Cuts power between battery and boards |
 | 1× electrolytic capacitor (470–1000µF) | Power smoothing for the DFPlayer |
 
 ---
 
 ## 🔌 Wiring
 
-Look at wiring_diagram (1).png
+![Wiring Diagram](wiring_diagram.png)
 
 > Full pin-by-pin connections below.
 
@@ -78,27 +75,25 @@ Look at wiring_diagram (1).png
 ### Audio output
 DFPlayer `DAC_L` / `DAC_R` / `GND` → MAX4410 amp input → earphones (or panel jack).
 
-### Power & Charging
-The entire device runs from a single **3.7V LiPo** stepped up to **5V** by a boost converter. A **TP4056 module (USB-C, with protection)** sits between the battery and the boost converter so the LiPo can be recharged over USB-C.
+### Power
+The entire device runs from a **9V rechargeable battery** stepped **down** to **5V** by a **buck converter**. That 5V rail feeds the ESP32 (via VIN), the DFPlayer, and the amplifier; the ESP32's onboard regulator supplies 3.3V to the OLED.
 
 ```
-USB-C → TP4056 charger ──(B+/B−)── LiPo
-                │
-                OUT+ → [ON/OFF switch] → Boost converter (set to 5V!) → ESP32 VIN + DFPlayer + amp
-                                                                       → (ESP32 regulator) → 3.3V → OLED
+9V battery → [ON/OFF switch] → Buck converter (set to 5V!) → ESP32 VIN + DFPlayer + amp
+                                                            → (ESP32 regulator) → 3.3V → OLED
 ```
 
-**Charger wiring:**
-- LiPo **+ / −** → TP4056 **B+ / B−**
-- TP4056 **OUT+** → **ON/OFF switch** → Boost converter **IN+**
-- TP4056 **OUT−** → Boost converter **IN−** (the boost draws from the protected output, not directly from the battery)
-- USB-C cable → TP4056 to charge (red LED = charging, blue/green = full)
+**Power wiring:**
+- 9V battery **+** → **ON/OFF switch** → Buck converter **IN+**
+- 9V battery **−** → Buck converter **IN−**
+- Buck **OUT+** → +5V rail (ESP32 VIN, DFPlayer VCC, amp +)
+- Buck **OUT−** → GND rail (common ground)
 
-The **ON/OFF switch** sits on the OUT+ line between the charger and the boost converter, so flipping it off powers down the whole device (and is also how you put it in charge-only mode).
+The **ON/OFF switch** sits on the battery's + line, so flipping it off powers down the whole device.
 
-⚠️ **Set the boost converter output to 5V with a multimeter BEFORE connecting any electronics.** The DFPlayer and ESP32 will be damaged by overvoltage.
+⚠️ **Set the buck converter output to 5V with a multimeter BEFORE connecting any electronics.** The DFPlayer and ESP32 will be damaged by overvoltage.
 
-ℹ️ This basic TP4056 isn't a load-sharing charger — **charge with the device powered off** (don't run the player while charging).
+ℹ️ The 9V battery is recharged with its own dedicated charger.
 
 ---
 

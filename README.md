@@ -41,11 +41,6 @@ A handheld, SD-card-based MP3 player built on an ESP32, with an animated OLED in
 ---
 
 ## 🔌 Wiring
-
-![Wiring Diagram](wiring_diagram.png)
-
-> Full pin-by-pin connections below.
-
 ### DFPlayer Mini (hardware Serial2)
 | DFPlayer | ESP32 |
 |----------|-------|

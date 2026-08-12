@@ -129,4 +129,4 @@ Protoype:
 <img width="3024" height="4032" alt="IMG_0585" src="https://github.com/user-attachments/assets/449cb5e2-264e-4654-9600-cb06449a603d" />
 
 Final:
-
+<img width="3024" height="4032" alt="IMG_0646" src="https://github.com/user-attachments/assets/055c4c03-fd47-412a-9bfe-dec3a366617a" />
